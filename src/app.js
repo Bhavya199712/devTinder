@@ -1,31 +1,20 @@
 const express = require("express");
 const app = express()
+const {adminAuth, userAuth} = require("./middlewares/auth")
 
+app.use("/admin", adminAuth)
 
-
-app.use('/hello', (req, res) => {
-    res.send('Hello from /hello route!')
+app.get("/admin/AllUser", (req,res) => {
+    res.send("all data send")
 })
 
-// app.use('/test', (req, res) => {
-//     res.send('Hello from /test route!')
-// })
-
-app.get('/test/:userID', (req, res) => {
-    console.log(req.params.userID)
-    res.send('Hello from /test route!')
+app.delete("/admin/deleteUser", (req,res) => {
+    res.send("delete user")
 })
 
-app.get('/user', (req, res) => {
-  const name = req.query.name || 'guest';
-  const age = req.query.age;
-
-  console.log(req.query);     
-  console.log(name, age);
-
-  res.send(`Hello ${name}! You are ${age || 'unknown age'}.`);
-});
-
+app.get("/user/profile", userAuth, (req,res) => {
+    res.send("user profile details")
+})
 
 app.listen(3000, () => {
     console.log("Server Started")
